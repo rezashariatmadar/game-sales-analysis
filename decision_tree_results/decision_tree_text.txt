@@ -1,0 +1,22 @@
+|--- pal_sales_ratio <= 0.04
+|   |--- pal_sales_ratio <= -0.10
+|   |   |--- pal_sales_ratio <= -0.15
+|   |   |   |--- class: 1
+|   |   |--- pal_sales_ratio >  -0.15
+|   |   |   |--- class: 1
+|   |--- pal_sales_ratio >  -0.10
+|   |   |--- jp_sales_ratio <= -0.05
+|   |   |   |--- class: 1
+|   |   |--- jp_sales_ratio >  -0.05
+|   |   |   |--- class: 0
+|--- pal_sales_ratio >  0.04
+|   |--- jp_sales_ratio <= 0.02
+|   |   |--- last_update_year <= 0.76
+|   |   |   |--- class: 1
+|   |   |--- last_update_year >  0.76
+|   |   |   |--- class: 1
+|   |--- jp_sales_ratio >  0.02
+|   |   |--- jp_sales_ratio <= 0.08
+|   |   |   |--- class: 0
+|   |   |--- jp_sales_ratio >  0.08
+|   |   |   |--- class: 1

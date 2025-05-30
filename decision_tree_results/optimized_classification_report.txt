@@ -1,0 +1,9 @@
+Classification Report for Optimized Decision Tree on Video Game Sales:
+              precision    recall  f1-score   support
+
+           0       0.98      0.98      0.98       494
+           1       0.98      0.98      0.98       506
+
+    accuracy                           0.98      1000
+   macro avg       0.98      0.98      0.98      1000
+weighted avg       0.98      0.98      0.98      1000

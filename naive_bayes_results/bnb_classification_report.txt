@@ -1,0 +1,9 @@
+Classification Report for Bernoulli Naive Bayes on Video Game Sales:
+              precision    recall  f1-score   support
+
+           0       0.53      0.88      0.66       494
+           1       0.67      0.23      0.34       506
+
+    accuracy                           0.55      1000
+   macro avg       0.60      0.55      0.50      1000
+weighted avg       0.60      0.55      0.50      1000
