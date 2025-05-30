@@ -1,0 +1,6 @@
+Optimized Random Forest Regression Metrics:
+MSE: 0.0054
+RMSE: 0.0738
+MAE: 0.0214
+R² Score: 0.9952
+Best Parameters: {'max_depth': None, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 200}

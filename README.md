@@ -1398,3 +1398,123 @@ The application includes comprehensive error handling to manage unexpected input
    - Fallback mechanisms for missing columns or unexpected data structures
 
 This robust error handling ensures the application provides a consistent user experience even when faced with unexpected inputs or data anomalies. 
+
+# Video Game Sales Analysis and Prediction Dashboard
+
+## Overview
+This project provides comprehensive analysis and predictive modeling for video game sales data, featuring both statistical reports and an interactive web application built with Streamlit.
+
+## Interactive Dashboard Features
+
+### 🎮 Interactive Analysis
+- Explore video game sales data with dynamic filters
+- Visualize market trends, regional performance, and platform comparisons
+- Generate customized analysis reports based on your selections
+
+### 📈 Sales Prediction
+- Predict total sales for new game concepts using machine learning models
+- Combined approach using both regression and classification models:
+  - Random Forest Regression Model (99.5% accuracy)
+  - Naive Bayes Classification (84.4% accuracy)
+  - Decision Tree Classification (98.0% accuracy)
+- Input validation ensures realistic prediction scenarios
+- Detailed model explanations to understand prediction results
+
+### 🔍 Model Explainability
+- Transparent explanations of how predictions are made
+- Visual representation of feature importance
+- Cross-model validation to compare regression and classification results
+- Confidence metrics based on model agreement
+
+### 📊 Data Export Functionality
+- Export prediction results in multiple formats:
+  - CSV format for spreadsheet applications
+  - JSON format for programmatic use
+  - Markdown reports for documentation
+- Generate detailed reports with visualizations
+
+### 📦 Batch Prediction Processing
+- Upload CSV files with multiple game concepts
+- Process predictions for entire portfolios at once
+- Export batch results with summary statistics
+- Visualize batch results with interactive charts
+
+### 🛡️ Error Handling & Input Validation
+- Robust validation for all user inputs
+- Detailed error messages with troubleshooting tips
+- Graceful error recovery
+- Protection against invalid input combinations
+
+### 📜 Prediction History
+- Track and compare your prediction history
+- Analyze trends in your game concept evaluations
+- Review detailed metrics for past predictions
+
+## Getting Started
+
+### Prerequisites
+- Python 3.7+
+- Required packages: streamlit, pandas, numpy, plotly, scikit-learn, joblib
+
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/game-sales-analysis.git
+cd game-sales-analysis
+
+# Install required packages
+pip install -r requirements.txt
+```
+
+### Running the Application
+```bash
+streamlit run app.py
+```
+The application will be accessible at http://localhost:8501 in your web browser.
+
+## Deployment Options
+The application can be deployed in various environments:
+
+### Local Deployment
+Run the application locally using the steps in "Getting Started".
+
+### Streamlit Cloud
+Deploy to Streamlit Cloud for web access:
+1. Push your code to GitHub
+2. Connect your repository to Streamlit Cloud
+3. Configure the app with the path to app.py
+
+### Docker Deployment
+Use the included Dockerfile for containerized deployment:
+```bash
+# Build the Docker image
+docker build -t game-sales-analysis .
+
+# Run the container
+docker run -p 8501:8501 game-sales-analysis
+```
+
+## Data Sources
+The application uses the VGChartz video game sales dataset, which includes:
+- Game titles, platforms, and publishers
+- Sales figures across different regions
+- Critic scores and release information
+
+## Model Information
+The prediction system uses three complementary models:
+
+### Regression Model
+- Random Forest Regression for precise sales predictions
+- Features: platform, genre, publisher, critic score, regional sales distribution
+- Performance: 99.5% R² score, 0.021 mean absolute error
+
+### Classification Models
+- Decision Tree Classifier: 98% accuracy for high/low sales classification
+- Naive Bayes Classifier: 84.4% accuracy with different probabilistic approach
+- Cross-validation between models for confidence assessment
+
+## Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details. 
