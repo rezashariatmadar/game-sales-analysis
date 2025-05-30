@@ -1459,7 +1459,7 @@ This project provides comprehensive analysis and predictive modeling for video g
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/game-sales-analysis.git
+git clone https://github.com/rezashariatmadar/game-sales-analysis.git
 cd game-sales-analysis
 
 # Install required packages
