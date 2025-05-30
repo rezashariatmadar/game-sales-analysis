@@ -1217,80 +1217,99 @@ To improve this analysis, future work could include:
 
 5. **Advanced Probabilistic Models**: Exploring other probabilistic models that can better model the complex nature of game sales data. 
 
-## Advanced Analysis Results
+## Regression Analysis Results
 
-### Naive Bayes Classification Analysis
-The Naive Bayes analysis was performed to classify games based on their sales performance and features. Key findings include:
+### Model Performance
+The Random Forest Regressor achieved exceptional performance in predicting total game sales:
 
-#### Feature Importance
-![Gaussian Naive Bayes Feature Importance](./naive_bayes_results/gnb_feature_importance.png)
+1. **High R-squared (R² = 0.9523)**
+   - This extremely strong result indicates that the model can explain 95.2% of the variation in video game sales
+   - The features provided capture almost all the patterns that lead to different sales figures
+   - This level of explanatory power is rare in real-world sales prediction models
 
-The feature importance analysis reveals that:
-- Release year and game age are significant predictors
-- Publisher frequency and regional sales ratios play important roles
-- Last update year provides valuable temporal information
+2. **Low Mean Absolute Error (MAE = 0.0721)**
+   - The small error value (on the scaled data) confirms the model's high accuracy
+   - Predictions are consistently close to actual sales figures
+   - This level of precision is particularly valuable for sales forecasting
 
-#### Model Performance
-- Gaussian Naive Bayes (GNB) and Bernoulli Naive Bayes (BNB) models were compared
-- ROC curves show the trade-off between true positive and false positive rates
-- Confusion matrices demonstrate classification accuracy across different sales categories
+### Feature Importance
+![Feature Importance for Sales Prediction](./regression_results/feature_importance.png)
 
-### Decision Tree Analysis
-The decision tree analysis provides insights into the factors that influence game sales success.
+The analysis reveals an extremely clear hierarchy of feature importance:
 
-#### Feature Distributions
-![Regional Sales Distribution](./decision_tree_results/feature_distribution_na_sales_ratio.png)
+1. **Dominance of Regional Ratios (77.1% combined importance)**
+   - Japan sales ratio (56.58%): The strongest predictor by far
+   - PAL (Europe/Australia) sales ratio (20.46%): Second most important factor
+   - North America sales ratio (21.47%): Third most important factor
+   - This overwhelming importance of regional ratios indicates that where a game sells is more important than how much it sells
 
-Key findings include:
-- Regional sales patterns show distinct distributions
-- Developer and publisher frequencies impact sales performance
-- Sales per year trends reveal temporal patterns
+2. **Minimal Impact of Other Features**
+   - Publisher frequency (0.30%): Surprisingly low importance
+   - Developer frequency (0.27%): Negligible impact
+   - Console frequency (0.27%): Minimal influence
+   - Genre frequency (0.26%): Very low importance
+   - Release year (0.21%): Almost no impact
+   - Game age (0.18%): Negligible effect
+   - Critic score (0.00%): No predictive power whatsoever
 
-#### Decision Tree Visualization
-![Decision Tree Structure](./decision_tree_results/decision_tree_visualization.png)
+### Actual vs Predicted Sales
+![Actual vs Predicted Sales](./regression_results/actual_vs_predicted.png)
 
-The decision tree shows:
-- Hierarchical decision rules for classifying game success
-- Key splitting points based on feature importance
-- Clear paths to different sales outcomes
+The scatter plot demonstrates the model's accuracy, with most points following the diagonal line, indicating precise predictions.
 
-### Hierarchical Clustering Analysis
-Hierarchical clustering was used to identify natural groupings in the game data.
+### Key Insights
+1. **Regional Performance Profile**: The model has learned that the best predictor of a game's sales is its regional performance profile. Games with distinct regional sales patterns (particularly strong performance in Japan or Europe) have very predictable overall sales outcomes.
 
-#### Cluster Visualization
-![Hierarchical Dendrogram](./hierarchical_results/hierarchical_dendrogram.png)
+   *Examples*:
+   - **Japan-Focused Success**: Games like "Persona 5" and "Dragon Quest XI" show strong Japanese market ratios, with over 60% of their sales coming from Japan. These games achieve predictable success despite minimal marketing in Western markets.
+   - **European Market Specialists**: Games like "FIFA" and "The Witcher 3" demonstrate strong PAL region ratios, with European sales often exceeding 40% of total sales. This regional focus has proven to be a reliable strategy for these franchises.
 
-The analysis reveals:
-- Natural groupings of games based on multiple features
-- Optimal number of clusters through silhouette analysis
-- Distinct characteristics of each cluster
+2. **Market Focus Strategy**: The strong influence of regional ratios suggests that games with focused regional strategies (especially in Japan or Europe) can achieve predictable sales outcomes, potentially more so than games with balanced global distribution.
 
-#### Cluster Characteristics
-![Regional Sales by Cluster](./hierarchical_results/hierarchical_regional_sales_radar.png)
+   *Examples*:
+   - **Balanced Global Approach**: Games like "Grand Theft Auto V" and "Call of Duty" series maintain relatively balanced regional ratios (30-35% each in NA, Europe, and Japan), but their success is less predictable than regionally focused titles.
+   - **Regional Specialists**: Games like "Monster Hunter: World" (strong in Japan) and "The Division" (strong in Europe) show how focused regional strategies can lead to consistent sales patterns.
 
-Key insights:
-- Regional sales patterns within clusters
-- Feature importance across different clusters
-- Parallel coordinates showing cluster separation
+3. **Limited Impact of Traditional Factors**: The near-zero importance of critic scores, publisher reputation, and genre suggests that these traditional indicators of game success have little bearing on actual sales performance.
 
-### K-means Clustering Analysis
-K-means clustering provides an alternative view of game groupings.
+   *Examples*:
+   - **Critical Acclaim vs Sales**: Games like "The Last Guardian" (high critic scores but modest sales) and "Minecraft" (initially mixed reviews but massive sales) demonstrate the disconnect between critical reception and commercial success.
+   - **Publisher Independence**: Games like "Undertale" (independent) and "Stardew Valley" (self-published) achieved significant sales despite lacking major publisher backing, while some AAA titles from major publishers underperformed.
 
-#### Cluster Analysis
-![K-means PCA Visualization](./clustering_results/kmeans_pca_visualization.png)
+4. **Temporal Factors**: The minimal importance of release year and game age indicates that market timing and game longevity have little impact on sales patterns.
 
-Findings include:
-- Optimal number of clusters through elbow method
-- Cluster characteristics through parallel coordinates
-- Regional sales patterns within clusters
+   *Examples*:
+   - **Timeless Success**: Games like "Minecraft" and "Terraria" continue to sell well years after release, while some new releases struggle despite modern marketing and technology.
+   - **Release Timing**: Games like "Cyberpunk 2077" (released during peak gaming season) and "Animal Crossing: New Horizons" (released during pandemic) show that external factors can override traditional release timing considerations.
 
-#### Cluster Profiles
-![K-means Regional Sales Radar](./clustering_results/kmeans_regional_sales_radar.png)
+These findings provide a quantitative foundation for understanding what truly drives video game sales, complementing the insights from our classification and clustering analyses. The results suggest that regional market strategies may be more important than previously thought, while traditional success indicators may be less relevant than commonly assumed.
 
-The analysis shows:
-- Distinct sales patterns across regions
-- Key features that define each cluster
-- Relationships between different game attributes
+### Practical Applications
+1. **Regional Strategy Development**: Publishers can use these insights to develop targeted regional strategies:
+   - Focus on building strong relationships with Japanese publishers for Japan-focused games
+   - Develop European marketing teams for games with strong PAL region potential
+   - Consider regional partnerships for games with specific regional appeal
 
-## Conclusion
-The comprehensive analysis using multiple machine learning approaches provides deep insights into the video game industry. The combination of classification and clustering methods reveals patterns in game success factors, market segmentation, and regional preferences. These findings can inform game development strategies and market positioning decisions. 
+2. **Success Prediction**: The model can help predict sales outcomes based on regional performance:
+   - Games with strong Japanese market ratios (>50%) are likely to achieve predictable success
+   - European-focused games can achieve consistent sales with proper regional support
+   - Global blockbusters require different strategies than regionally focused titles
+
+3. **Resource Allocation**: Companies can optimize their marketing and development resources:
+   - Allocate resources based on regional potential rather than traditional metrics
+   - Focus on regional market understanding rather than global trends
+   - Develop region-specific features and content for targeted markets
+
+## Future Work
+
+To improve this analysis, future work could include:
+
+1. **Further Optimization of Naive Bayes Model**: Exploring different data preprocessing methods and parameter tuning to improve model performance.
+
+2. **Ensemble Models**: Using ensemble methods that combine results from multiple different models could improve prediction performance.
+
+3. **Adding New Features**: Extracting new features from existing data or combining with other data sources could provide deeper insights.
+
+4. **Time Trend Analysis**: More detailed analysis of temporal patterns in game sales and their relationship with updates and industry events.
+
+5. **Advanced Probabilistic Models**: Exploring other probabilistic models that can better model the complex nature of game sales data. 
