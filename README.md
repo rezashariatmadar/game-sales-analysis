@@ -1216,3 +1216,81 @@ To improve this analysis, future work could include:
 4. **Time Trend Analysis**: More detailed analysis of temporal patterns in game sales and their relationship with updates and industry events.
 
 5. **Advanced Probabilistic Models**: Exploring other probabilistic models that can better model the complex nature of game sales data. 
+
+## Advanced Analysis Results
+
+### Naive Bayes Classification Analysis
+The Naive Bayes analysis was performed to classify games based on their sales performance and features. Key findings include:
+
+#### Feature Importance
+![Gaussian Naive Bayes Feature Importance](./naive_bayes_results/gnb_feature_importance.png)
+
+The feature importance analysis reveals that:
+- Release year and game age are significant predictors
+- Publisher frequency and regional sales ratios play important roles
+- Last update year provides valuable temporal information
+
+#### Model Performance
+- Gaussian Naive Bayes (GNB) and Bernoulli Naive Bayes (BNB) models were compared
+- ROC curves show the trade-off between true positive and false positive rates
+- Confusion matrices demonstrate classification accuracy across different sales categories
+
+### Decision Tree Analysis
+The decision tree analysis provides insights into the factors that influence game sales success.
+
+#### Feature Distributions
+![Regional Sales Distribution](./decision_tree_results/feature_distribution_na_sales_ratio.png)
+
+Key findings include:
+- Regional sales patterns show distinct distributions
+- Developer and publisher frequencies impact sales performance
+- Sales per year trends reveal temporal patterns
+
+#### Decision Tree Visualization
+![Decision Tree Structure](./decision_tree_results/decision_tree_visualization.png)
+
+The decision tree shows:
+- Hierarchical decision rules for classifying game success
+- Key splitting points based on feature importance
+- Clear paths to different sales outcomes
+
+### Hierarchical Clustering Analysis
+Hierarchical clustering was used to identify natural groupings in the game data.
+
+#### Cluster Visualization
+![Hierarchical Dendrogram](./hierarchical_results/hierarchical_dendrogram.png)
+
+The analysis reveals:
+- Natural groupings of games based on multiple features
+- Optimal number of clusters through silhouette analysis
+- Distinct characteristics of each cluster
+
+#### Cluster Characteristics
+![Regional Sales by Cluster](./hierarchical_results/hierarchical_regional_sales_radar.png)
+
+Key insights:
+- Regional sales patterns within clusters
+- Feature importance across different clusters
+- Parallel coordinates showing cluster separation
+
+### K-means Clustering Analysis
+K-means clustering provides an alternative view of game groupings.
+
+#### Cluster Analysis
+![K-means PCA Visualization](./clustering_results/kmeans_pca_visualization.png)
+
+Findings include:
+- Optimal number of clusters through elbow method
+- Cluster characteristics through parallel coordinates
+- Regional sales patterns within clusters
+
+#### Cluster Profiles
+![K-means Regional Sales Radar](./clustering_results/kmeans_regional_sales_radar.png)
+
+The analysis shows:
+- Distinct sales patterns across regions
+- Key features that define each cluster
+- Relationships between different game attributes
+
+## Conclusion
+The comprehensive analysis using multiple machine learning approaches provides deep insights into the video game industry. The combination of classification and clustering methods reveals patterns in game success factors, market segmentation, and regional preferences. These findings can inform game development strategies and market positioning decisions. 
