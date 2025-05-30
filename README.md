@@ -1313,3 +1313,88 @@ To improve this analysis, future work could include:
 4. **Time Trend Analysis**: More detailed analysis of temporal patterns in game sales and their relationship with updates and industry events.
 
 5. **Advanced Probabilistic Models**: Exploring other probabilistic models that can better model the complex nature of game sales data. 
+
+## Testing
+
+The project includes a comprehensive test suite to ensure data quality, model reliability, and proper functioning of the interactive dashboard. The tests are organized in the `tests/` directory.
+
+### Running Tests
+
+To run the complete test suite:
+
+```bash
+python tests/run_tests.py
+```
+
+To run individual test modules:
+
+```bash
+# Data processing tests
+pytest -v tests/test_data_processing.py
+
+# Model tests
+pytest -v tests/test_models.py
+
+# App utility tests
+pytest -v tests/test_app_utils.py
+
+# Streamlit app tests
+pytest -v tests/test_streamlit_app.py
+```
+
+### Test Coverage
+
+The test suite covers the following aspects:
+
+1. **Data Processing Tests**
+   - Dataset existence and readability
+   - Required columns validation
+   - Data integrity (no duplicates, valid release years, non-negative sales)
+   - Feature engineering (ratio calculations, standardization)
+   - Missing data handling strategies
+
+2. **Model Tests**
+   - Model file existence and loading
+   - Performance evaluation of regression and classification models
+   - Feature importance extraction
+   - Prediction functionality with normal and edge-case inputs
+   - Model robustness to outlier values
+
+3. **App Utility Tests**
+   - Helper functions for data filtering and summarization
+   - End-to-end prediction workflow
+   - Input validation for handling unexpected user inputs
+   - Proper error handling for invalid data
+
+4. **Streamlit App Tests**
+   - Data loading and visualization
+   - Model loading and prediction workflow
+   - Platform/console naming variations
+   - Error handling for missing files or invalid inputs
+   - Handling of NaN values in prediction pipeline
+
+### Robust Error Handling
+
+The application includes comprehensive error handling to manage unexpected inputs:
+
+1. **Invalid Release Years**
+   - Auto-detection and filtering of release years outside valid range (1950-2024)
+   - Graceful handling of extreme outlier years
+
+2. **Negative Sales Values**
+   - Detection and handling of negative sales figures that may exist in the data
+   - Maintaining data integrity while accounting for potential data entry errors
+
+3. **Missing Values**
+   - Intelligent imputation based on column context
+   - Default values: critic scores → 75, sales → 0
+
+4. **String Values in Numeric Fields**
+   - Automatic conversion of text inputs to numeric values where appropriate
+   - Robust error handling when conversion fails
+
+5. **Edge Cases**
+   - Handling of empty filter selections in the dashboard
+   - Fallback mechanisms for missing columns or unexpected data structures
+
+This robust error handling ensures the application provides a consistent user experience even when faced with unexpected inputs or data anomalies. 
