@@ -318,7 +318,7 @@ def filter_dataframe(df, genres=None, platforms=None, publishers=None, year_rang
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/game-sales-analysis.git
+   git clone https://github.com/rezashariatmadar/game-sales-analysis.git
    cd game-sales-analysis
    ```
 
