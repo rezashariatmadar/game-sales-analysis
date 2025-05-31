@@ -63,9 +63,11 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-# Save the scaler
+# Save the scaler for each model type
 joblib.dump(scaler, 'regression_results/scaler.joblib')
-print("Scaler saved as regression_results/scaler.joblib")
+joblib.dump(scaler, 'naive_bayes_results/scaler.joblib')
+joblib.dump(scaler, 'decision_tree_results/scaler.joblib')
+print("Scalers saved as regression_results/scaler.joblib, naive_bayes_results/scaler.joblib, and decision_tree_results/scaler.joblib")
 
 # Train Random Forest Regression model
 print("Training Random Forest Regression model...")
@@ -93,6 +95,11 @@ dt_model.fit(X_train_scaled, y_cls_train)
 # Save the Decision Tree model
 joblib.dump(dt_model, 'decision_tree_results/decision_tree_model.joblib')
 print("Decision Tree model saved as decision_tree_results/decision_tree_model.joblib")
+
+# Save feature names
+joblib.dump(X.columns.tolist(), 'regression_results/features.joblib')
+joblib.dump(X.columns.tolist(), 'naive_bayes_results/features.joblib')
+joblib.dump(X.columns.tolist(), 'decision_tree_results/features.joblib')
 
 print("\nAll models created and saved successfully!")
 print("\nYou can now run the Streamlit app with: streamlit run app.py") 

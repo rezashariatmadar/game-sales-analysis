@@ -1,0 +1,107 @@
+2025-05-31 12:47:16,919 - INFO - Starting randomized hyperparameter tuning process...
+2025-05-31 12:47:16,919 - INFO - Loading dataset...
+2025-05-31 12:47:16,943 - INFO - Dataset loaded successfully with 18874 records
+2025-05-31 12:47:16,943 - INFO - Available columns: ['title', 'console', 'genre', 'publisher', 'developer', 'critic_score', 'total_sales', 'na_sales', 'jp_sales', 'pal_sales', 'other_sales', 'release_date', 'last_update', 'release_year']
+2025-05-31 12:47:16,948 - INFO - Using features: ['critic_score', 'release_year', 'na_sales', 'jp_sales', 'pal_sales']
+2025-05-31 12:47:16,949 - INFO - Regression target - median value: 0.12
+2025-05-31 12:47:16,950 - INFO - Classification target - class distribution: {0: 9707, 1: 9167}
+2025-05-31 12:47:16,952 - INFO - Scaling features...
+2025-05-31 12:47:16,954 - INFO - Starting Random Forest Regression model tuning...
+2025-05-31 12:47:16,956 - INFO - Starting RandomizedSearchCV for Random Forest Regression...
+2025-05-31 12:47:35,985 - INFO - Best parameters for Random Forest Regression: {'bootstrap': True, 'max_depth': np.int64(31), 'max_features': None, 'min_samples_leaf': 3, 'min_samples_split': 3, 'n_estimators': 393}
+2025-05-31 12:47:40,359 - INFO - Random Forest Regression - Mean Squared Error: 0.0170
+2025-05-31 12:47:40,360 - INFO - Random Forest Regression - R² Score: 0.9748
+2025-05-31 12:47:41,173 - INFO - Random Forest tuning completed in 24.22 seconds
+2025-05-31 12:47:41,180 - INFO - Starting Decision Tree Classification model tuning...
+2025-05-31 12:47:41,181 - INFO - Starting RandomizedSearchCV for Decision Tree Classification...
+2025-05-31 12:47:41,355 - INFO - Best parameters for Decision Tree Classification: {'criterion': 'gini', 'max_depth': np.int64(11), 'max_features': None, 'min_samples_leaf': 15, 'min_samples_split': 14, 'splitter': 'best'}
+2025-05-31 12:47:41,365 - INFO - Decision Tree Classification - Accuracy: 0.9849
+2025-05-31 12:47:41,365 - INFO - Decision Tree Classification - Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.98      0.99      0.99      1933
+           1       0.99      0.98      0.98      1842
+
+    accuracy                           0.98      3775
+   macro avg       0.98      0.98      0.98      3775
+weighted avg       0.98      0.98      0.98      3775
+
+2025-05-31 12:47:41,437 - INFO - Decision Tree tuning completed in 0.26 seconds
+2025-05-31 12:47:41,438 - INFO - Starting Naive Bayes Classification model tuning...
+2025-05-31 12:47:41,438 - INFO - Starting RandomizedSearchCV for Naive Bayes Classification...
+2025-05-31 12:47:41,538 - INFO - Best parameters for Naive Bayes Classification: {'var_smoothing': np.float64(5.564180225431371e-07)}
+2025-05-31 12:47:41,543 - INFO - Naive Bayes Classification - Accuracy: 0.9401
+2025-05-31 12:47:41,543 - INFO - Naive Bayes Classification - Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.91      0.98      0.94      1933
+           1       0.98      0.90      0.94      1842
+
+    accuracy                           0.94      3775
+   macro avg       0.94      0.94      0.94      3775
+weighted avg       0.94      0.94      0.94      3775
+
+2025-05-31 12:47:41,545 - INFO - Naive Bayes tuning completed in 0.11 seconds
+2025-05-31 12:47:41,545 - INFO - HTML report generated: tuning_results_randomized/hyperparameter_tuning_report.html
+2025-05-31 12:50:25,354 - INFO - Starting randomized hyperparameter tuning process...
+2025-05-31 12:50:25,354 - INFO - Loading dataset...
+2025-05-31 12:50:25,376 - INFO - Dataset loaded successfully with 18874 records
+2025-05-31 12:50:25,376 - INFO - Available columns: ['title', 'console', 'genre', 'publisher', 'developer', 'critic_score', 'total_sales', 'na_sales', 'jp_sales', 'pal_sales', 'other_sales', 'release_date', 'last_update', 'release_year']
+2025-05-31 12:50:25,381 - INFO - Using features: ['critic_score', 'release_year', 'console', 'genre', 'publisher', 'na_sales', 'jp_sales', 'pal_sales']
+2025-05-31 12:50:25,382 - INFO - Regression target - median value: 0.12
+2025-05-31 12:50:25,382 - INFO - Classification target - class distribution: {0: 9707, 1: 9167}
+2025-05-31 12:50:25,386 - INFO - Scaling features...
+2025-05-31 12:50:25,390 - INFO - Starting Random Forest Regression model tuning...
+2025-05-31 12:50:25,391 - INFO - Starting RandomizedSearchCV for Random Forest Regression...
+2025-05-31 12:53:20,869 - INFO - Starting randomized hyperparameter tuning process...
+2025-05-31 12:53:20,869 - INFO - Loading dataset...
+2025-05-31 12:53:20,891 - INFO - Dataset loaded successfully with 18874 records
+2025-05-31 12:53:20,891 - INFO - Available columns: ['title', 'console', 'genre', 'publisher', 'developer', 'critic_score', 'total_sales', 'na_sales', 'jp_sales', 'pal_sales', 'other_sales', 'release_date', 'last_update', 'release_year']
+2025-05-31 12:53:20,905 - INFO - Using features: ['critic_score', 'release_year', 'console', 'genre', 'publisher', 'na_sales', 'jp_sales', 'pal_sales']
+2025-05-31 12:53:20,906 - INFO - Regression target - median value: 0.12
+2025-05-31 12:53:20,906 - INFO - Classification target - class distribution: {0: 9707, 1: 9167}
+2025-05-31 12:53:58,002 - INFO - Starting randomized hyperparameter tuning process...
+2025-05-31 12:53:58,003 - INFO - Loading dataset...
+2025-05-31 12:53:58,026 - INFO - Dataset loaded successfully with 18874 records
+2025-05-31 12:53:58,026 - INFO - Available columns: ['title', 'console', 'genre', 'publisher', 'developer', 'critic_score', 'total_sales', 'na_sales', 'jp_sales', 'pal_sales', 'other_sales', 'release_date', 'last_update', 'release_year']
+2025-05-31 12:53:58,040 - INFO - Using features: ['critic_score', 'release_year', 'console', 'genre', 'publisher', 'na_sales', 'jp_sales', 'pal_sales']
+2025-05-31 12:53:58,040 - INFO - Regression target - median value: 0.12
+2025-05-31 12:53:58,041 - INFO - Classification target - class distribution: {0: 9707, 1: 9167}
+2025-05-31 12:53:58,044 - INFO - Applying preprocessing transforms...
+2025-05-31 12:53:58,061 - INFO - Starting Random Forest Regression model tuning...
+2025-05-31 12:53:58,063 - INFO - Starting RandomizedSearchCV for Random Forest Regression...
+2025-05-31 12:54:53,103 - INFO - Best parameters for Random Forest Regression: {'bootstrap': True, 'max_depth': np.int64(45), 'max_features': None, 'min_samples_leaf': 4, 'min_samples_split': 4, 'n_estimators': 196}
+2025-05-31 12:55:00,074 - INFO - Random Forest Regression - Mean Squared Error: 0.0181
+2025-05-31 12:55:00,074 - INFO - Random Forest Regression - R² Score: 0.9732
+2025-05-31 12:55:00,257 - INFO - Random Forest tuning completed in 62.20 seconds
+2025-05-31 12:55:00,260 - INFO - Starting Decision Tree Classification model tuning...
+2025-05-31 12:55:00,261 - INFO - Starting RandomizedSearchCV for Decision Tree Classification...
+2025-05-31 12:55:00,664 - INFO - Best parameters for Decision Tree Classification: {'criterion': 'entropy', 'max_depth': np.int64(22), 'max_features': None, 'min_samples_leaf': 8, 'min_samples_split': 16, 'splitter': 'best'}
+2025-05-31 12:55:00,690 - INFO - Decision Tree Classification - Accuracy: 0.9870
+2025-05-31 12:55:00,690 - INFO - Decision Tree Classification - Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.98      0.99      0.99      1933
+           1       0.99      0.98      0.99      1842
+
+    accuracy                           0.99      3775
+   macro avg       0.99      0.99      0.99      3775
+weighted avg       0.99      0.99      0.99      3775
+
+2025-05-31 12:55:00,778 - INFO - Decision Tree tuning completed in 0.52 seconds
+2025-05-31 12:55:00,778 - INFO - Starting Naive Bayes Classification model tuning...
+2025-05-31 12:55:00,778 - INFO - Starting RandomizedSearchCV for Naive Bayes Classification...
+2025-05-31 12:55:01,143 - INFO - Best parameters for Naive Bayes Classification: {'var_smoothing': np.float64(2.0866527711063714e-06)}
+2025-05-31 12:55:01,158 - INFO - Naive Bayes Classification - Accuracy: 0.8585
+2025-05-31 12:55:01,158 - INFO - Naive Bayes Classification - Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.88      0.84      0.86      1933
+           1       0.84      0.88      0.86      1842
+
+    accuracy                           0.86      3775
+   macro avg       0.86      0.86      0.86      3775
+weighted avg       0.86      0.86      0.86      3775
+
+2025-05-31 12:55:01,159 - INFO - Naive Bayes tuning completed in 0.38 seconds
+2025-05-31 12:55:01,160 - INFO - HTML report generated: tuning_results_randomized/hyperparameter_tuning_report.html

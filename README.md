@@ -1,8 +1,45 @@
+- [User Documentation](./DOCUMENTATION.md) - Comprehensive guide for using the application
+- [Developer Guide](./DEVELOPER_GUIDE.md) - Technical documentation for developers
 # Video Game Sales Analysis Report
-## Statistical Analysis and Visual Representations
-
-### Introduction
+## Introduction
 This report presents the results of analyzing the VGChartz video game sales dataset. The data contains 18,874 records with 14 variables that provide information about video game titles, platforms, sales figures across different regions, critic scores, and release information.
+
+## Machine Learning Model Optimization
+
+We've implemented hyperparameter tuning to optimize our machine learning models for better sales prediction and classification performance. This process systematically searches for the optimal combination of model parameters to improve accuracy and reliability.
+
+### Models Optimized Through Hyperparameter Tuning
+
+1. **Random Forest Regression** - For precise sales volume prediction
+   - **Performance**: Achieved R² Score of 0.9732 (97.32% variance explained) and MSE of 0.0181
+   - **Optimized Parameters**:
+     - bootstrap: True
+     - max_depth: 45
+     - max_features: None
+     - min_samples_leaf: 4
+     - min_samples_split: 4
+     - n_estimators: 196
+
+2. **Decision Tree Classification** - For high/low sales categorization
+   - **Performance**: Achieved accuracy of 0.9870 (98.70%)
+   - **Optimized Parameters**:
+     - criterion: entropy
+     - max_depth: 22
+     - max_features: None
+     - min_samples_leaf: 8
+     - min_samples_split: 16
+     - splitter: best
+
+3. **Naive Bayes Classification** - Alternative classification approach
+   - **Performance**: Achieved accuracy of 0.8585 (85.85%)
+   - **Optimized Parameters**:
+     - var_smoothing: 2.09e-06
+
+The tuning process used both GridSearchCV (for exhaustive search) and RandomizedSearchCV (for efficient exploration of large parameter spaces). A unified preprocessing pipeline was also implemented to ensure consistency between training and prediction.
+
+For complete details on the hyperparameter tuning process and results, see the [Hyperparameter Tuning Documentation](./HYPERPARAMETER_TUNING.md).
+
+## Statistical Analysis and Visual Representations
 
 ### Environment Setup and Data Loading Code
 

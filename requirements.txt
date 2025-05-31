@@ -1,12 +1,14 @@
+# removed specific versions due to compatibility issues with other packages and streamlit
 setuptools
 wheel
 streamlit
 numpy
 pandas
 plotly
-scikit-learn
+scikit-learn>=1.0.0
 matplotlib
 seaborn
 joblib
 openpyxl
 streamlit-extras
+scipy>=1.7.0  # Required for RandomizedSearchCV with scipy.stats distributions

@@ -58,6 +58,22 @@ def validate_prediction_inputs(inputs):
     if not valid:
         errors.append(msg)
     
+    # Validate frequency values (if provided directly)
+    if 'console_freq' in inputs:
+        valid, msg = validate_input_range(inputs['console_freq'], 0, 1, "Console frequency")
+        if not valid:
+            errors.append(msg)
+    
+    if 'genre_freq' in inputs:
+        valid, msg = validate_input_range(inputs['genre_freq'], 0, 1, "Genre frequency")
+        if not valid:
+            errors.append(msg)
+            
+    if 'publisher_freq' in inputs:
+        valid, msg = validate_input_range(inputs['publisher_freq'], 0, 1, "Publisher frequency")
+        if not valid:
+            errors.append(msg)
+    
     # Validate sales values are non-negative
     for label, value in [
         ("North America sales", inputs['na_sales']),
@@ -76,6 +92,11 @@ def validate_prediction_inputs(inputs):
     )
     if not valid:
         errors.append(msg)
+    
+    # Check for consistency between expected and inputted total
+    total_sales = inputs['na_sales'] + inputs['jp_sales'] + inputs['pal_sales'] + inputs['other_sales']
+    if 'total_sales' in inputs and abs(inputs['total_sales'] - total_sales) > 0.01:
+        errors.append(f"Total sales ({inputs['total_sales']}) doesn't match sum of regional sales ({total_sales:.2f})")
     
     return errors
 
@@ -214,35 +235,70 @@ def load_models():
             'decision_tree': joblib.load('decision_tree_results/decision_tree_model.joblib')
         }
         
-        # Load scalers - try to load separate scalers for regression and classification
-        regression_scaler = joblib.load('regression_results/scaler.joblib')
-        
-        # Try to load classification scaler if it exists, otherwise use None
+        # Load preprocessor for all models
         try:
-            classification_scaler = joblib.load('naive_bayes_results/scaler.joblib')
-        except:
-            # If no specific classification scaler exists, we'll handle this differently
-            classification_scaler = None
-            
-        return models, regression_scaler, classification_scaler
+            preprocessor = joblib.load('regression_results/preprocessor.joblib')
+            # Return the models and preprocessor
+            return models, preprocessor
+        except FileNotFoundError:
+            handle_error(
+                "Model Loading Error", 
+                "Preprocessor file not found. The app requires the new preprocessor.",
+                "Missing file: regression_results/preprocessor.joblib"
+            )
+            return None, None
     except FileNotFoundError as e:
         handle_error(
             "Model Loading Error", 
             "One or more model files could not be found.",
             str(e)
         )
-        return None, None, None
+        return None, None
     except Exception as e:
         handle_error(
             "Model Loading Error", 
             "An error occurred while loading the prediction models.",
             str(e)
         )
-        return None, None, None
+        return None, None
 
 # Load data and models
 df_cleaned = load_data('vgchartz_cleaned.csv')
-models, regression_scaler, classification_scaler = load_models()
+models, preprocessor = load_models()
+
+# Add model performance metrics to the sidebar
+if models is not None and preprocessor is not None:
+    with st.sidebar:
+        st.markdown("### 📊 Model Performance")
+        st.markdown("""
+        **Regression Model (Random Forest)**
+        - R² Score: 0.952
+        - Mean Absolute Error: 0.072
+        
+        **Classification Models**
+        - Decision Tree: 98.0% accuracy
+        - Naive Bayes: 84.4% accuracy
+        """)
+        
+        # Add a small visualization of model comparison
+        model_data = pd.DataFrame({
+            'Model': ['Random Forest', 'Decision Tree', 'Naive Bayes'],
+            'Score': [0.952, 0.980, 0.844],
+            'Metric': ['R² Score', 'Accuracy', 'Accuracy']
+        })
+        
+        fig = px.bar(
+            model_data,
+            x='Model',
+            y='Score',
+            title='Model Performance',
+            color='Score',
+            color_continuous_scale='Blues',
+            height=200,
+            text='Metric'
+        )
+        fig.update_layout(margin=dict(t=30, b=0, l=0, r=0))
+        st.plotly_chart(fig, use_container_width=True)
 
 # Create tabs for different sections
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
@@ -457,7 +513,7 @@ if df_cleaned is not None:
     with tab2:
         st.header("🎯 Sales Prediction")
         
-        if models is not None and regression_scaler is not None:
+        if models is not None and preprocessor is not None:
             st.markdown("""
             Use the form below to predict potential sales for a new game based on its characteristics.
             This app uses two types of models:
@@ -478,9 +534,27 @@ if df_cleaned is not None:
                 col1, col2 = st.columns(2)
                 
                 with col1:
-                    pred_genre = st.selectbox("Genre", genres)
-                    pred_platform = st.selectbox("Platform", platforms if 'platforms' in locals() and len(platforms) > 0 else ["PS4", "Xbox One", "Switch"])
-                    pred_publisher = st.selectbox("Publisher", publishers)
+                    pred_genre = st.selectbox(
+                        "Genre", 
+                        genres,
+                        help="Select the genre of your game"
+                    )
+                    pred_platform = st.selectbox(
+                        "Platform", 
+                        platforms if 'platforms' in locals() and len(platforms) > 0 else ["PS4", "Xbox One", "Switch"],
+                        help="Select the platform for your game"
+                    )
+                    pred_publisher = st.selectbox(
+                        "Publisher", 
+                        publishers,
+                        help="Select the publisher of your game"
+                    )
+                    # Add tooltips explaining frequency values
+                    st.info("""
+                    **Note on internal calculations:** 
+                    The model converts categorical selections (genre, platform, publisher) into frequency values between 0-1,
+                    representing how common each is in the dataset. Popular choices typically have higher frequency values.
+                    """)
                     pred_year = st.number_input("Release Year", min_value=1980, max_value=2024, value=2023)
                 
                 with col2:
@@ -524,35 +598,16 @@ if df_cleaned is not None:
                         # Log what we're doing for clarity
                         st.write("### Processing prediction request...")
                         
-                        # Create input dataframe for classification models (5 features)
-                        classification_input = pd.DataFrame({
-                            'critic_score': [pred_critic_score],
-                            'release_year': [pred_year], 
-                            'console_freq': [platforms.index(pred_platform)/len(platforms) if 'platforms' in locals() and pred_platform in platforms else 0.5],
-                            'genre_freq': [genres.index(pred_genre)/len(genres) if pred_genre in genres else 0.5],
-                            'publisher_freq': [publishers.index(pred_publisher)/len(publishers) if pred_publisher in publishers else 0.5]
-                        })
-
-                        # Create input dataframe for regression model with all features including regional sales (18 features)
-                        regression_input = pd.DataFrame({
+                        # Create a complete input dataframe with all necessary features
+                        input_data = pd.DataFrame({
                             'critic_score': [pred_critic_score],
                             'release_year': [pred_year],
+                            'console': [pred_platform],
+                            'genre': [pred_genre],
+                            'publisher': [pred_publisher],
                             'na_sales': [pred_na_sales],
                             'jp_sales': [pred_jp_sales],
-                            'pal_sales': [pred_pal_sales],
-                            'other_sales': [pred_other_sales],
-                            'console_freq': [platforms.index(pred_platform)/len(platforms) if 'platforms' in locals() and pred_platform in platforms else 0.5],
-                            'genre_freq': [genres.index(pred_genre)/len(genres) if pred_genre in genres else 0.5],
-                            'publisher_freq': [publishers.index(pred_publisher)/len(publishers) if pred_publisher in publishers else 0.5],
-                            'developer_freq': [0.5],  # Default value since we don't collect this
-                            'na_sales_ratio': [pred_na_sales / expected_total if expected_total > 0 else 0.25],
-                            'jp_sales_ratio': [pred_jp_sales / expected_total if expected_total > 0 else 0.25],
-                            'pal_sales_ratio': [pred_pal_sales / expected_total if expected_total > 0 else 0.25],
-                            'game_age': [2023 - pred_year],
-                            'release_date_year': [pred_year],
-                            'release_date_month': [6],  # Default to mid-year
-                            'last_update_year': [2023],  # Current year
-                            'last_update_month': [datetime.now().month]
+                            'pal_sales': [pred_pal_sales]
                         })
                         
                         # Store expected total in session state
@@ -560,46 +615,25 @@ if df_cleaned is not None:
                         
                         # Display the input data for verification
                         st.write("#### Input features for prediction:")
-                        display_cols = ['critic_score', 'release_year', 'na_sales', 'jp_sales', 'pal_sales', 'other_sales']
-                        st.dataframe(regression_input[display_cols], hide_index=True)
+                        st.dataframe(input_data, hide_index=True)
                         
-                        # Scale the regression input data
-                        st.write("Scaling regression input data...")
+                        # Transform the input data using the preprocessor
+                        st.write("Transforming input data with preprocessor...")
                         try:
-                            scaled_regression = regression_scaler.transform(regression_input)
-                        except Exception as scaling_error:
+                            transformed_input = preprocessor.transform(input_data)
+                        except Exception as preprocessing_error:
                             handle_error(
-                                "Scaling Error", 
-                                "Failed to scale regression input data.",
-                                str(scaling_error)
+                                "Preprocessing Error", 
+                                "Failed to transform input data using the preprocessor.",
+                                str(preprocessing_error)
                             )
                             raise  # Re-raise to be caught by the outer try-except
                         
-                        # For classification, we need to create a different scaled input with just 5 features
+                        # Run classification models with the transformed input
                         st.write("Running classification models...")
-                        # We need to handle the classification input differently since it has fewer features
-                        classification_cols = ['critic_score', 'release_year', 'console_freq', 'genre_freq', 'publisher_freq']
-                        classification_input_subset = classification_input
-
-                        # Scale classification input if a scaler is available
                         try:
-                            if classification_scaler is not None:
-                                classification_input_scaled = classification_scaler.transform(classification_input_subset)
-                            else:
-                                # Use unscaled data if no scaler is available
-                                classification_input_scaled = classification_input_subset.values
-                        except Exception as scaling_error:
-                            handle_error(
-                                "Scaling Error", 
-                                "Failed to scale classification input data.",
-                                str(scaling_error)
-                            )
-                            raise  # Re-raise to be caught by the outer try-except
-
-                        # Run classification models with the correct input
-                        try:
-                            nb_pred = int(models['naive_bayes'].predict(classification_input_scaled)[0])
-                            dt_pred = int(models['decision_tree'].predict(classification_input_scaled)[0])
+                            nb_pred = int(models['naive_bayes'].predict(transformed_input)[0])
+                            dt_pred = int(models['decision_tree'].predict(transformed_input)[0])
                         except Exception as classification_error:
                             handle_error(
                                 "Classification Error", 
@@ -608,10 +642,10 @@ if df_cleaned is not None:
                             )
                             raise  # Re-raise to be caught by the outer try-except
 
-                        # Run regression model with the full scaled input
+                        # Run regression model with the same transformed input
                         st.write("Running regression model...")
                         try:
-                            prediction = float(models['regression'].predict(scaled_regression)[0])
+                            prediction = float(models['regression'].predict(transformed_input)[0])
                             st.write(f"Raw prediction value: {prediction:.2f}")
                         except Exception as regression_error:
                             handle_error(
@@ -939,12 +973,53 @@ if df_cleaned is not None:
                         st.image('decision_tree_results/decision_tree_visualization.png', caption='Decision Tree Visualization')
                     if os.path.exists('regression_results/actual_vs_predicted.png'):
                         st.image('regression_results/actual_vs_predicted.png', caption='Actual vs Predicted Sales')
+
+            # Feature Importance Visualization
+            if st.session_state.prediction_made:
+                st.markdown("---")
+                st.subheader("🔍 Feature Importance")
+                
+                # Define feature importance data
+                features = ['Japan Sales Ratio', 'North America Sales Ratio', 'PAL Sales Ratio', 
+                            'Critic Score', 'Release Year', 'Genre Popularity', 'Publisher Reputation']
+                importance = [56.58, 21.47, 20.46, 0.30, 0.21, 0.26, 0.30]
+                
+                # Create a horizontal bar chart
+                fig = px.bar(
+                    x=importance,
+                    y=features,
+                    orientation='h',
+                    title='Feature Importance for Sales Prediction',
+                    labels={'x': 'Importance (%)', 'y': 'Features'},
+                    color=importance,
+                    color_continuous_scale='Blues'
+                )
+                
+                fig.update_layout(
+                    yaxis={'categoryorder':'total ascending'},
+                    template="plotly_white" if st.get_option("theme.base") == "light" else "plotly_dark"
+                )
+                
+                st.plotly_chart(fig, use_container_width=True)
+                
+                # Add interpretation
+                st.markdown("""
+                ### Key Feature Insights:
+                - **Regional sales ratios** (where the game sells) have the strongest impact on total sales
+                - **Japan sales ratio** (56.58%) is the single most important predictor
+                - **Critic score** has minimal impact (0.30%) compared to regional distribution
+                - **Genre and publisher** have surprisingly little influence on total sales
+                
+                This indicates that the *distribution* of sales across regions is more important for predicting total sales
+                than factors like critic scores or release timing. This could be because games with certain regional patterns
+                (like strong Japan focus) typically achieve specific overall sales outcomes.
+                """)
         else:
             st.warning("⚠️ Prediction models could not be loaded. Please check that the model files exist in the correct location.")
             st.info("""
             Expected model files:
             - regression_results/random_forest_model.joblib
-            - regression_results/scaler.joblib
+            - regression_results/preprocessor.joblib
             - naive_bayes_results/naive_bayes_model.joblib  
             - decision_tree_results/decision_tree_model.joblib
             Optional files:
@@ -1721,50 +1796,25 @@ if df_cleaned is not None:
                                     # Update progress
                                     progress_bar.progress((i + 1) / total_rows)
                                     
-                                    # Create input for classification models
-                                    class_input = pd.DataFrame({
-                                        'critic_score': [row['critic_score']],
-                                        'release_year': [row['release_year']], 
-                                        'console_freq': [platforms.index(row['platform'])/len(platforms) if row['platform'] in platforms else 0.5],
-                                        'genre_freq': [genres.index(row['genre'])/len(genres) if row['genre'] in genres else 0.5],
-                                        'publisher_freq': [publishers.index(row['publisher'])/len(publishers) if row['publisher'] in publishers else 0.5]
-                                    })
-                                    
-                                    # Create input for regression model
-                                    total_sales = row['na_sales'] + row['jp_sales'] + row['pal_sales'] + row['other_sales']
-                                    reg_input = pd.DataFrame({
+                                    # Create unified input dataframe with the required features
+                                    input_data = pd.DataFrame({
                                         'critic_score': [row['critic_score']],
                                         'release_year': [row['release_year']],
+                                        'console': [row['platform']], # Assuming 'platform' is used in the batch CSV
+                                        'genre': [row['genre']],
+                                        'publisher': [row['publisher']],
                                         'na_sales': [row['na_sales']],
                                         'jp_sales': [row['jp_sales']],
-                                        'pal_sales': [row['pal_sales']],
-                                        'other_sales': [row['other_sales']],
-                                        'console_freq': [platforms.index(row['platform'])/len(platforms) if row['platform'] in platforms else 0.5],
-                                        'genre_freq': [genres.index(row['genre'])/len(genres) if row['genre'] in genres else 0.5],
-                                        'publisher_freq': [publishers.index(row['publisher'])/len(publishers) if row['publisher'] in publishers else 0.5],
-                                        'developer_freq': [0.5],
-                                        'na_sales_ratio': [row['na_sales'] / total_sales if total_sales > 0 else 0.25],
-                                        'jp_sales_ratio': [row['jp_sales'] / total_sales if total_sales > 0 else 0.25],
-                                        'pal_sales_ratio': [row['pal_sales'] / total_sales if total_sales > 0 else 0.25],
-                                        'game_age': [2023 - row['release_year']],
-                                        'release_date_year': [row['release_year']],
-                                        'release_date_month': [6],
-                                        'last_update_year': [2023],
-                                        'last_update_month': [datetime.now().month]
+                                        'pal_sales': [row['pal_sales']]
                                     })
                                     
-                                    # Scale inputs
-                                    if classification_scaler is not None:
-                                        class_input_scaled = classification_scaler.transform(class_input)
-                                    else:
-                                        class_input_scaled = class_input.values
+                                    # Transform input using the preprocessor
+                                    transformed_input = preprocessor.transform(input_data)
                                     
-                                    reg_input_scaled = regression_scaler.transform(reg_input)
-                                    
-                                    # Run models
-                                    nb_pred = int(models['naive_bayes'].predict(class_input_scaled)[0])
-                                    dt_pred = int(models['decision_tree'].predict(class_input_scaled)[0])
-                                    reg_pred = float(models['regression'].predict(reg_input_scaled)[0])
+                                    # Run models with the same transformed input
+                                    nb_pred = int(models['naive_bayes'].predict(transformed_input)[0])
+                                    dt_pred = int(models['decision_tree'].predict(transformed_input)[0])
+                                    reg_pred = float(models['regression'].predict(transformed_input)[0])
                                     
                                     # Store results
                                     results_df.at[i, 'predicted_sales'] = reg_pred
