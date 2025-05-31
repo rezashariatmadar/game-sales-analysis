@@ -1954,7 +1954,7 @@ if df_cleaned is not None:
             2. **Installation**:
                ```bash
                # Clone the repository
-               git clone https://github.com/yourusername/game-sales-analysis.git
+               git clone https://github.com/rezashariatmadar/game-sales-analysis.git
                cd game-sales-analysis
                
                # Install required packages
@@ -2055,41 +2055,15 @@ if df_cleaned is not None:
             4. Deploy using the EB CLI or AWS Console
             """)
         
-        # Troubleshooting
-        with st.expander("Troubleshooting"):
-            st.markdown("""
-            ### Common Issues and Solutions
-            
-            #### Model Loading Errors
-            
-            - **Issue**: Models fail to load
-            - **Solution**: Ensure all model files are correctly placed in their respective directories:
-              - `regression_results/random_forest_model.joblib`
-              - `naive_bayes_results/naive_bayes_model.joblib`
-              - `decision_tree_results/decision_tree_model.joblib`
-              - `regression_results/scaler.joblib`
-            
-            #### Data Loading Issues
-            
-            - **Issue**: Data file not found
-            - **Solution**: Ensure `vgchartz_cleaned.csv` is in the root directory
-            
-            #### Memory Issues
-            
-            - **Issue**: Application crashes due to memory limits
-            - **Solution**: 
-              - Use `@st.cache_data` decorators (already implemented)
-              - Consider reducing the size of the dataset
-              - Increase memory allocation in your deployment environment
-            """)
+
         
         # Contact information
         st.markdown("""
         ### Need Help?
         
         For questions or assistance with deployment, contact:
-        - Email: youremail@example.com
-        - GitHub: [Project Repository](https://github.com/yourusername/game-sales-analysis)
+        - Email: shariatmadat.reza@gmail.com.com
+        - GitHub: [Project Repository](https://github.com/rezashariatmadar/game-sales-analysis)
         """)
 
 else:
