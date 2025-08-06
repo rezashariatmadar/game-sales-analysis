@@ -1,53 +1,114 @@
-# Video Game Sales Analysis Project Documentation
+# Video Game Sales Analysis - User Documentation
 
-## Project Overview
+## 📚 Documentation Guide
 
-This project provides a comprehensive analysis of video game sales data, including interactive visualizations, statistical analysis, and machine learning predictions. The application is built with Python and Streamlit, allowing users to explore sales trends, regional performance, and make predictions for new game titles.
+This project includes multiple documentation files tailored for different audiences:
 
-## Table of Contents
+- **[README.md](README.md)** - 🎮 **Start here!** Easy overview for casual visitors
+- **[README_TECHNICAL.md](README_TECHNICAL.md)** - 🛠️ Technical details for developers
+- **[README_ASSESSMENT.md](README_ASSESSMENT.md)** - 📊 Assessment guide for evaluators
+- **[QUICK_START_GUIDE.md](QUICK_START_GUIDE.md)** - ⚡ Quick installation and setup
+- **[DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md)** - 👨‍💻 Contribution and development guide
 
-1. [Project Structure](#project-structure)
-2. [Installation and Setup](#installation-and-setup)
-3. [Data Description](#data-description)
-4. [Features](#features)
-5. [Machine Learning Models](#machine-learning-models)
-6. [Usage Guide](#usage-guide)
-7. [Technical Implementation](#technical-implementation)
-8. [Troubleshooting](#troubleshooting)
+## 🚀 Quick Navigation
 
-## Project Structure
+### For New Users
+1. Read the [main README](README.md) for an overview
+2. Follow the [Quick Start Guide](QUICK_START_GUIDE.md) to get running
+3. Explore the interactive application
+
+### For Developers
+1. Check the [Technical README](README_TECHNICAL.md) for architecture details
+2. Review the [Developer Guide](DEVELOPER_GUIDE.md) for contribution guidelines
+3. Examine the code structure and tests
+
+### For Evaluators
+1. Start with the [Assessment Guide](README_ASSESSMENT.md)
+2. Review the technical implementation details
+3. Run the test suite and evaluation scripts
+
+## 🏗️ Project Structure (Updated)
 
 ```
 game-sales-analysis/
-├── app.py                     # Main Streamlit application
-├── create_models.py           # Script to train and save ML models
-├── requirements.txt           # Python dependencies
-├── README.md                  # Project overview and analysis results
-├── vgchartz_cleaned.csv       # Cleaned dataset
-├── vgchartz-2024.csv          # Raw dataset
-├── vgchartz_numeric.csv       # Processed numeric dataset
-├── vgchartz_pca.csv           # Dataset with PCA transformations
-├── features.joblib            # Saved feature names for models
-├── scaler.joblib              # Saved data scaler for predictions
-├── regression_model.joblib    # Saved regression model
-├── regression_results/        # Results from regression analysis
-├── naive_bayes_results/       # Results from Naive Bayes classification
-├── decision_tree_results/     # Results from Decision Tree classification
-├── hierarchical_results/      # Results from hierarchical clustering
-├── clustering_results/        # Results from other clustering methods
-├── plots/                     # Generated visualization plots
-├── cleaning_plots/            # Plots related to data cleaning
-└── processed_data/            # Intermediate processed datasets
+├── README.md                    # 🎮 Main overview (casual users)
+├── README_TECHNICAL.md          # 🛠️ Technical documentation
+├── README_ASSESSMENT.md         # 📊 Assessment/evaluation guide
+├── app.py                       # 📱 Main Streamlit application
+├── data/                        # 📊 Data files
+│   ├── raw/                     # Original datasets
+│   └── processed/               # Cleaned datasets
+├── models/                      # 🤖 Trained ML models (.joblib)
+├── results/                     # 📈 Analysis results
+│   ├── regression_results/
+│   ├── decision_tree_results/
+│   ├── naive_bayes_results/
+│   ├── clustering_results/
+│   └── hierarchical_results/
+├── assets/                      # 🎨 Static assets
+│   ├── plots/                   # Generated visualizations
+│   └── cleaning_plots/          # Data cleaning plots
+├── tests/                       # 🧪 Test suite
+└── *.py                         # 🐍 Core scripts
 ```
 
-## Installation and Setup
+## 🔧 Installation and Setup
 
-### Prerequisites
+### Quick Install
+```bash
+git clone https://github.com/rezashariatmadar/game-sales-analysis.git
+cd game-sales-analysis
+pip install -r requirements.txt
+streamlit run app.py
+```
 
-- Python 3.8 or higher
-- pip (Python package installer)
+For detailed setup instructions, see the [Quick Start Guide](QUICK_START_GUIDE.md).
 
-### Installation Steps
+## 🎯 Main Features
+
+### 📊 Interactive Data Analysis
+- Filter games by platform, genre, publisher, year
+- Visualize sales trends across regions
+- Explore market patterns and insights
+
+### 🔮 Sales Prediction
+- Predict sales for new game concepts
+- Multiple ML models (Random Forest, Decision Tree, Naive Bayes)
+- Get confidence intervals and explanations
+
+### 📈 Comprehensive Analysis
+- Regional market analysis
+- Platform performance comparisons
+- Genre and publisher insights
+- Time-based trend analysis
+
+## 🤖 Machine Learning Models
+
+| Model | Purpose | Accuracy |
+|-------|---------|----------|
+| Random Forest Regression | Precise sales prediction | 97.3% R² |
+| Decision Tree Classification | High/low sales categorization | 98.7% |
+| Naive Bayes Classification | Probabilistic classification | 85.9% |
+
+For technical details, see [README_TECHNICAL.md](README_TECHNICAL.md).
+
+## 🆘 Getting Help
+
+- **Installation issues?** → [Quick Start Guide](QUICK_START_GUIDE.md)
+- **Want to contribute?** → [Developer Guide](DEVELOPER_GUIDE.md)  
+- **Technical questions?** → [Technical README](README_TECHNICAL.md)
+- **Need to evaluate?** → [Assessment Guide](README_ASSESSMENT.md)
+
+## 📧 Support
+
+If you can't find what you're looking for in the documentation:
+1. Check the [GitHub Issues](https://github.com/rezashariatmadar/game-sales-analysis/issues)
+2. Review the troubleshooting section in the Quick Start Guide
+3. Open a new issue with detailed information about your problem
+
+---
+
+*This documentation was last updated with the repository reorganization.*
 
 1. Clone the repository:
    ```

@@ -39,9 +39,10 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Project specific
-*.csv
-!vgchartz-2024.csv
-!vgchartz_cleaned.csv
-!vgchartz_numeric.csv
-!vgchartz_pca.csv 
+# Project specific - keep processed data but ignore raw data downloads
+data/raw/*.csv
+!data/raw/vgchartz-2024.csv
+# Keep processed data files for the app to work
+models/
+results/
+assets/plots/ 

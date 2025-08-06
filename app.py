@@ -230,21 +230,21 @@ def load_data(path):
 def load_models():
     try:
         models = {
-            'regression': joblib.load('regression_results/random_forest_model.joblib'),
-            'naive_bayes': joblib.load('naive_bayes_results/naive_bayes_model.joblib'),
-            'decision_tree': joblib.load('decision_tree_results/decision_tree_model.joblib')
+            'regression': joblib.load('results/regression_results/random_forest_model.joblib'),
+            'naive_bayes': joblib.load('results/naive_bayes_results/naive_bayes_model.joblib'),
+            'decision_tree': joblib.load('results/decision_tree_results/decision_tree_model.joblib')
         }
         
         # Load preprocessor for all models
         try:
-            preprocessor = joblib.load('regression_results/preprocessor.joblib')
+            preprocessor = joblib.load('results/regression_results/preprocessor.joblib')
             # Return the models and preprocessor
             return models, preprocessor
         except FileNotFoundError:
             handle_error(
                 "Model Loading Error", 
                 "Preprocessor file not found. The app requires the new preprocessor.",
-                "Missing file: regression_results/preprocessor.joblib"
+                "Missing file: results/regression_results/preprocessor.joblib"
             )
             return None, None
     except FileNotFoundError as e:
@@ -263,7 +263,7 @@ def load_models():
         return None, None
 
 # Load data and models
-df_cleaned = load_data('vgchartz_cleaned.csv')
+df_cleaned = load_data('data/processed/vgchartz_cleaned.csv')
 models, preprocessor = load_models()
 
 # Add model performance metrics to the sidebar
@@ -832,8 +832,8 @@ if df_cleaned is not None:
                     
                     # Load feature importance if available
                     try:
-                        if os.path.exists('regression_results/feature_importance.csv'):
-                            feature_imp = pd.read_csv('regression_results/feature_importance.csv')
+                        if os.path.exists('results/regression_results/feature_importance.csv'):
+                            feature_imp = pd.read_csv('results/regression_results/feature_importance.csv')
                             top5_features = feature_imp.head(5)
                             
                             # Create a bar chart of feature importance
@@ -1018,7 +1018,7 @@ if df_cleaned is not None:
             st.warning("⚠️ Prediction models could not be loaded. Please check that the model files exist in the correct location.")
             st.info("""
             Expected model files:
-            - regression_results/random_forest_model.joblib
+            - results/regression_results/random_forest_model.joblib
             - regression_results/preprocessor.joblib
             - naive_bayes_results/naive_bayes_model.joblib  
             - decision_tree_results/decision_tree_model.joblib

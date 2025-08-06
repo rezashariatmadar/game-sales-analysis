@@ -6,7 +6,7 @@ import numpy as np
 print("--- Training and Saving Model ---")
 
 # --- 1. Load and Preprocess Data (Same as before) ---
-df = pd.read_csv('vgchartz_cleaned.csv')
+df = pd.read_csv('data/processed/vgchartz_cleaned.csv')
 
 # Fill NaNs
 numeric_cols_to_fill = ['na_sales', 'jp_sales', 'pal_sales', 'other_sales', 'release_year']

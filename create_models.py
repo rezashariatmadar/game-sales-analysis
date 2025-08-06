@@ -18,10 +18,10 @@ os.makedirs('decision_tree_results', exist_ok=True)
 # Load the data
 try:
     print("Loading dataset...")
-    df = pd.read_csv('vgchartz_cleaned.csv')
+    df = pd.read_csv('data/processed/vgchartz_cleaned.csv')
     print(f"Dataset loaded successfully with {len(df)} records")
 except FileNotFoundError:
-    print("Error: vgchartz_cleaned.csv not found!")
+    print("Error: data/processed/vgchartz_cleaned.csv not found!")
     exit(1)
 
 # Extract features and targets
